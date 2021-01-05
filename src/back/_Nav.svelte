@@ -6,6 +6,8 @@ import "firebase/auth";
 import "firebase/storage";
 import "firebase/performance"; // Optional
 import "firebase/analytics"; // Optional
+
+import { Router, Route, Link } from 'yrv';
 export let email;
 
 
@@ -29,7 +31,15 @@ export let email;
         <h4>{email}</h4>
 		<FirebaseApp {firebase} perf analytics>
 		<User let:user let:auth>
-	        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+	        <p><span uk-icon="icon: list"></span></p>
+	        <div>
+		        <ul class="uk-list uk-list-large uk-list-divider">
+		        	<li><Link href="/">Principal</Link></li>
+		            <li><Link href="/categorias">Categoria</Link></li>
+		            <li>Marcas</li>
+		            <li>Modelos</li>
+		        </ul>
+		    </div>
 
 
 	        <div class="uk-position-bottom uk-margin-small-left uk-margin-small-bottom">
