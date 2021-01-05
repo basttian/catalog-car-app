@@ -8,11 +8,12 @@ import "firebase/performance"; // Optional
 import "firebase/analytics"; // Optional
 
 import { Router, Route, Link } from 'yrv';
+
 export let email;
 
 
 </script>
-
+<!-- Nav -->
 <nav class="uk-navbar uk-navbar-container uk-margin">
     <div class="uk-navbar-left">
         <a class="uk-navbar-toggle" uk-toggle="target: #offcanvas-reveal">
@@ -21,8 +22,7 @@ export let email;
     </div>
 </nav>
 
-
-
+<!-- Cambas -->
 <div id="offcanvas-reveal" uk-offcanvas="mode: reveal; overlay: true">
     <div class="uk-offcanvas-bar">
 
@@ -33,11 +33,12 @@ export let email;
 		<User let:user let:auth>
 	        <p><span uk-icon="icon: list"></span></p>
 	        <div>
+	        	<hr>
 		        <ul class="uk-list uk-list-large uk-list-divider">
-		        	<li><Link href="/">Principal</Link></li>
-		            <li><Link href="/categorias">Categoria</Link></li>
-		            <li>Marcas</li>
-		            <li>Modelos</li>
+		        	<li><Link href="/">Añadir nuevo vehículo</Link></li>
+		            <li><Link href="/categorias">Tipos de vehículos</Link></li>
+		            <li><Link href="/marcas">Marcas de coches</Link></li>
+		            <li>Catálogo de autos</li>
 		        </ul>
 		    </div>
 
