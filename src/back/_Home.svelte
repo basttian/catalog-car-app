@@ -15,6 +15,8 @@ import { Router, Route, Link } from 'yrv';
 import Front from './_New.svelte';
 import Cat from './_Cat.svelte';
 import Brand from './_Brand.svelte';
+import List from './_List.svelte';
+import Car from './_Car.svelte';
 
 </script>
 <FirebaseApp {firebase} perf analytics>
@@ -24,9 +26,11 @@ import Brand from './_Brand.svelte';
 
 <Router>
   <Route path="/" exact component={Front}/>
-  <Route fallback>Not found</Route>
+  <Route fallback>Error 404 - Not found</Route>
   <Route path="/categorias" exact component={Cat} />
   <Route path="/marcas" exact component={Brand} />
+  <Route path="/lista" exact component={List} />
+  <Route path="/Car/:id" exact component={Car} />
 </Router>
 
 

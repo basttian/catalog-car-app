@@ -75,7 +75,7 @@ async function Upload (f,archivos) {
 </script>
 <FirebaseApp {firebase} perf analytics>
 <User let:user let:auth>
-<div class="uk-container">
+<div class="uk-container uk-margin-large-bottom">
 <Collection path={'autos'} log let:data let:ref >
 <div slot="loading"><div uk-spinner></div></div>
 
@@ -202,7 +202,7 @@ async function Upload (f,archivos) {
           })
 
       })}
-    >Agregar</button>
+    disabled={!vehiculo.modelo || !vehiculo.marca || !vehiculo.precio }>Agregar</button>
   </div>
 </form>
 

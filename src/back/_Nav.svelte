@@ -38,7 +38,7 @@ export let email;
 		        	<li><Link href="/">Añadir nuevo vehículo</Link></li>
 		            <li><Link href="/categorias">Tipos de vehículos</Link></li>
 		            <li><Link href="/marcas">Marcas de coches</Link></li>
-		            <li>Catálogo de autos</li>
+		            <li><Link href="/lista">Catálogo de autos</Link></li>
 		        </ul>
 		    </div>
 

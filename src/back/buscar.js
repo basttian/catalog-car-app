@@ -27,29 +27,24 @@ export function myFunction() {
 	}
 }
 
-export let tot = 0.00;
-export function calcular() {
-    /** sumamos las filas **/
-    // obtenemos todas las filas del tbody
-    const filas=document.querySelectorAll("#miTabla tbody tr");
-    // bucle por cada una de las filas
-    filas.forEach((fila) => {
-        // obtenemos los tds de cada fila
-        const tds=fila.querySelectorAll("td");
-        let total=0;
-        // bucle por cada uno de los tds con excepcion el primero (producto) y ultimo (total)
-        for(let i=1; i<tds.length-1; i++) {
-            // sumamos los tds
-            total+=parseFloat(tds[i].innerHTML);
-        }
-		// mostramos el total en la ultima casilla
-		tds[tds.length-1].getElementsByClassName("uk-label")[0].innerText=(total/3).toFixed(2);
-	});
-}
-export function clean() {
-    const filas=document.querySelectorAll("#miTabla tbody tr");
-    filas.forEach((fila) => {
-        const tds=fila.querySelectorAll("td");
-		tds[tds.length-1].getElementsByClassName("uk-label")[0].innerText='';
-	});
+export function buscarTabla() {
+  var input, filter, table, tr, td, i, j, visible;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 1; i < tr.length; i++) {
+    visible = false;
+    td = tr[i].getElementsByTagName("td");
+    for (j = 0; j < td.length; j++) {
+      if (td[j] && td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+        visible = true;
+      }
+    }
+    if (visible === true) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
+    }
+  }
 }
