@@ -19,6 +19,7 @@ let vehiculo =
   marca:"",
   modelo:"",
   anio:"",
+  moneda:"$",
   precio:"",
   combustible:"Nafta",
   motor:"",
@@ -79,7 +80,7 @@ async function Upload (f,archivos) {
 <Collection path={'autos'} log let:data let:ref >
 <div slot="loading"><div uk-spinner></div></div>
 
-<h1 class="uk-heading-divider">Añadir nuevo</h1>
+<h1 class="uk-heading-divider">Añadir nuevo vehículo</h1>
 
 <form on:submit|preventDefault class="uk-grid-small" uk-grid>
   <div class="uk-width-1-1">
@@ -96,7 +97,7 @@ async function Upload (f,archivos) {
             <option value="" selected="">Seleccionar tipo</option>}
             option
           {#each data as item, index}
-            <option value={item.id}>{item.nombre}</option>
+            <option value={item.nombre}>{item.nombre}</option>
           {/each}
       </select>
       </Collection>
@@ -111,7 +112,7 @@ async function Upload (f,archivos) {
       <select class="uk-select" bind:value={vehiculo.marca}>
           <option value="" selected>Seleccionar marca</option>}
         {#each data as item, index}  
-          <option  value={item.id}>{item.nombre}</option>
+          <option  value={item.nombre}>{item.nombre}</option>
         {/each}
       </select>
       </Collection>
@@ -124,7 +125,16 @@ async function Upload (f,archivos) {
       <input class="uk-input" type="number" bind:value={vehiculo.anio} placeholder="Año">
   </div>
   <div class="uk-width-1-2@s">
+    <div class="uk-flex uk-flex-middle">
+       <div class="uk-link uk-margin-small-right" uk-form-custom="target: true">
+          <select bind:value={vehiculo.moneda}>
+              <option value="$">$</option>
+              <option value="$USD">$USD</option>
+          </select>
+          <span></span>
+      </div>
       <input class="uk-input" type="number" bind:value={vehiculo.precio} placeholder="Precio">
+    </div>
   </div>
   <!-- Imagenes -->
   <div class="uk-width-1-1">
@@ -175,6 +185,7 @@ async function Upload (f,archivos) {
           marca:vehiculo.marca,
           modelo:vehiculo.modelo,
           año:vehiculo.anio,
+          moneda:vehiculo.moneda,
           precio:vehiculo.precio,
           combustible:vehiculo.combustible,
           motor:vehiculo.motor,
@@ -189,6 +200,7 @@ async function Upload (f,archivos) {
             vehiculo.marca="";
             vehiculo.modelo="";
             vehiculo.anio="";
+            vehiculo.moneda="$";
             vehiculo.precio="";
             vehiculo.combustible="Nafta";
             vehiculo.motor="";

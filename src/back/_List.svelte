@@ -49,8 +49,20 @@ import {buscarTabla} from "./buscar.js";
 	        <tr>
 	        	<td>
 	        	<ul class="uk-iconnav">
-					<li><Link href="/Car/{item.id}"><span uk-icon="pencil"></span></Link></li>
-					<li><a href="" uk-icon="icon: trash"></a></li>
+					<li><Link href="/lista/{item.id}"><span uk-icon="pencil"></span></Link></li>
+					<li><a uk-icon="icon: trash"
+                            on:click={()=>{
+                                    UIkit.modal.confirm('Esta seguro que desea eliminar este registro!').then(function() {
+                                        item.ref.delete().then(()=>{
+                                        UIkit.notification({message: `<span uk-icon='icon: trash'></span> ${item.modelo} eliminado éxitosamente.`, pos: 'top-right', status: 'primary'})
+                                        })
+                                    }, function () {
+                                        UIkit.notification({message: "<span uk-icon='icon: warning'></span> Cancelado por el usuario.", pos: 'top-right', status: 'danger'})
+                                    });
+                                }  
+                            }
+                        ></a>
+                    </li>
 				</ul>
 	        	</td>
 	        	<td>{item.tipo}</td>
@@ -62,7 +74,7 @@ import {buscarTabla} from "./buscar.js";
 	            <td>{item.kilometros}</td>
 	            <td>{item.motor}</td>
 	            <td>{item.transmision}</td>
-	            <td>{item.precio}</td>
+	            <td>{item.moneda}&nbsp;{item.precio}</td>
 	        </tr>
         {/each}
     </tbody>

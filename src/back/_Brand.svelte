@@ -16,14 +16,8 @@ import {myFunction} from "./buscar.js";
 <Collection path={`marcas`} let:data={marcas} let:ref on:ref log>
 <div slot="loading"><div uk-spinner></div></div>
 
-<div class="uk-clearfix">
-    <div class="uk-float-right">
-        <Link uk-tooltip="title:Atras; pos:bottom" class="uk-link-reset" go="back" ><span uk-icon="icon: arrow-left; ratio: 2"></Link>
-    </div>
-    <div class="uk-float-left">
-        <h1 class="uk-heading-divider">Marcas</h1>
-    </div>
-</div>
+<h1 class="uk-heading-divider">Marcas</h1>
+
 <!-- Formulario -->
 <form on:submit|preventDefault>
 <input class="uk-input uk-text-capitalize" type="text" name="" bind:value={marca} placeholder="Añadir nueva marca de vehículo">

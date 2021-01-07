@@ -7,11 +7,11 @@ import "firebase/storage";
 import "firebase/performance"; // Optional
 import "firebase/analytics"; // Optional
 
-import { Router, Route, Link } from 'yrv';
-
+import { Router, Route, Link, router } from 'yrv';
+router.subscribe(e => {
+if (!e.initial) console.log(e);
+});
 export let email;
-
-
 </script>
 <!-- Nav -->
 <nav class="uk-navbar uk-navbar-container uk-margin">
@@ -20,6 +20,14 @@ export let email;
             <span uk-navbar-toggle-icon></span>
         </a>
     </div>
+    <!-- Oculto si no se encuentra en /home -->
+    <div class="uk-navbar-right">
+		{#if  $router.path != "/" }
+		    <Link uk-tooltip="title:Atras; pos:bottom" class="uk-link-reset uk-margin-small-right" go="back" ><span uk-icon="icon: arrow-left; ratio: 2"></Link>
+	  	{:else}
+	  		<Link class="uk-margin-small-right" href="/lista" uk-tooltip="title: Catálogo de autos; pos: bottom"><span uk-icon="icon: file-text; ratio: 2"></span></Link>
+	  	{/if}
+  	</div>
 </nav>
 
 <!-- Cambas -->

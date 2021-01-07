@@ -30,7 +30,7 @@ import Car from './_Car.svelte';
   <Route path="/categorias" exact component={Cat} />
   <Route path="/marcas" exact component={Brand} />
   <Route path="/lista" exact component={List} />
-  <Route path="/Car/:id" exact component={Car} />
+  <Route path="/lista/:id" exact component={Car} />
 </Router>
 
 
