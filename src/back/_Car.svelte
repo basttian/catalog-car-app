@@ -11,13 +11,20 @@ $: {
 var storage = firebase.storage();
 var storageRef = storage.ref();
 
+let stateChange;
+
 const borrarIMG = (a) =>{
-	var desertRef = storageRef.child(a);
-	desertRef.delete().then(function() {
-		console.log("File deleted successfully")
-	}).catch(function(error) {
-		console.log(error.message)
-	});
+  UIkit.modal.confirm('Esta acción eliminará permanentemente la imagen seleccionada.').then(function() {
+    var desertRef = storageRef.child(a);
+    desertRef.delete().then(function() {
+      UIkit.notification({message: `<span uk-icon='icon: trash'></span> ${a} <small>Eliminada correctamente.</small>`, pos: 'top-right', status: 'danger'});
+        stateChange = storageRef.child(`${a}`).listAll();
+    }).catch(function(error) {
+      console.log(error.message)
+    });
+  }, function () {
+      console.log('Rejected.')
+  });
 }
 
 
@@ -30,7 +37,16 @@ async function Upload (f,archivos) {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
     function(snapshot) {
        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-       console.log('Upload is ' + progress + '% done');
+
+       var bar = document.getElementById('js-progressbar');
+       bar.removeAttribute('hidden');
+       bar.value = progress;
+         if(progress===100){
+            setTimeout(function () {
+                bar.setAttribute('hidden', 'hidden');
+            }, 1000);
+         }
+      //console.log('Upload is ' + progress + '% done');
       switch (snapshot.state) {
         case firebase.storage.TaskState.PAUSED: // or 'paused'
           console.log('Upload is paused');
@@ -51,6 +67,7 @@ async function Upload (f,archivos) {
   }, function() {
         uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
           //console.log('File available at', downloadURL);
+          stateChange = storageRef.child(`${f}`).listAll();
         });
   })
 }
@@ -93,7 +110,7 @@ let promise;
 <User let:user let:auth>
 <div class="uk-container uk-margin-large-bottom">
 <Doc path={`autos/${id}`} let:data={autoData} let:ref={autoRef} log>
-<div slot="loading">Loading...</div>
+<div slot="loading"><div uk-spinner></div></div>
 
 <div class="">
 <h3 class="uk-heading-divider">{autoData.marca}&nbsp;{autoData.modelo}&nbsp;{autoData.año}&nbsp;-&nbsp;{autoData.kilometros}Km
@@ -104,14 +121,12 @@ let promise;
 <!-- Imagenes grid-->
 <div class="uk-width-auto@m">
 <span class="uk-margin-small-bottom" uk-icon="icon: thumbnails; ratio: 1.5"></span>
-{#await storageRef.child(`${autoData.folder}`).listAll()}
+{#await storageRef.child(`${autoData.folder}`).listAll() || stateChange }
 <div uk-spinner></div>
 {:then res}
-
 	{#each res.items as item,i}
 	<div uk-grid>
     <div>
-
 		<div uk-lightbox>
 		{#await item.getDownloadURL()}
 			<div uk-spinner></div>
@@ -123,12 +138,12 @@ let promise;
 				</div>
 		{/await}
 		</div>
-		
 </div>
-<div><a uk-icon="icon: trash" on:click={()=>borrarIMG(item.fullPath)}></a></div>
+<div>
+  <a uk-icon="icon: trash" on:click={()=>borrarIMG(item.fullPath)}></a>
+</div>
 </div>
 	{/each}	
-
 {:catch error}
 	<p style="color: red">{error.message}</p>
 {/await}
@@ -148,15 +163,31 @@ let promise;
         {/each}
       {/if}
   </div>
-
+<progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
 
 </div>
 <!-- Datos grid-->
 <div class="uk-width-expand@m">
 	<form on:submit|preventDefault class="uk-grid-small" uk-grid>
     <div class="uk-width-1-1">
-	    <label><input class="uk-radio" type="radio" name="radio2" bind:group={estado} value={true} checked={autoData.nuevo===true ? estado = true : ''} > Nuevo</label>
-	    <label><input class="uk-radio" type="radio" name="radio2" bind:group={estado} value={false} checked={autoData.nuevo===false ? estado = false: '' } > Usado</label>
+     <!-- Estado del vehiculo -->
+      <label>
+        <input class="uk-radio" type="radio" 
+        name="radio2" 
+        group={estado}
+        value={true} 
+        checked = {autoData.nuevo == true ? 'checked' : '' }
+        on:change = {() => estado = true }
+        > Nuevo</label>
+      <label>
+        <input class="uk-radio" type="radio" 
+        name="radio2" 
+        group={estado} 
+        value={false} 
+        checked = {autoData.nuevo == false ? 'checked' : '' } 
+        on:change = {() => estado = false }         
+        > Usado</label>
+      
     </div>
     <div class="uk-width-1-2@s"> 
         <Collection path={`categoria`} let:data={selectTipos} let:ref on:ref log>
@@ -241,8 +272,11 @@ let promise;
     <div class="uk-width-1-1">
     	<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-top uk-button-large" on:click={()=>
 
-      	promise = autoRef.update({
-          nuevo:estado,
+        Upload(autoData.folder, files).then(()=>{
+          
+
+          promise = autoRef.update({
+          nuevo:typeof estado==='undefined'?autoData.nuevo:estado,//rare don't use
           tipo:tipo,
           marca:marca,
           modelo:modelo.value,
@@ -256,11 +290,14 @@ let promise;
           descripcion:descripcion.value,
           folder: autoData.folder,
           }).then(()=>{
-            Upload(autoData.folder, files);
-            UIkit.notification({message: "<span uk-icon='icon: check'></span> Actualizado con éxito.", pos: 'bottom-center', status: 'primary'});
+            UIkit.notification({message: "<span uk-icon='icon: check'></span> Actualizado con éxito.", pos: 'top-right', status: 'primary'});
           }).catch((e)=>{
             console.log(e);
           })
+
+
+        })
+      	
 
       	}>Actualizar registro&nbsp;{#await promise}<div uk-spinner></div>{/await}</button>
     </div>
