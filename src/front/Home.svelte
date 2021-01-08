@@ -11,6 +11,8 @@ let usuario;
 let clave;
 let promise;
 
+let selTipos,selMarca,selModelo ;
+let selectedTipo,selectedMarca,selectedModelo;
 
 </script>
 <FirebaseApp {firebase} perf analytics>
@@ -30,42 +32,77 @@ let promise;
 </div>
 
 
-<div class="uk-container uk-margin-medium-top">
+<div class="uk-container uk-margin-medium-top uk-margin-xlarge-bottom">
 	
 <div class="uk-card uk-card-default uk-card-hover uk-cover-container">	
 <div class="uk-card-header">
 <h1 class="uk-card-title uk-text-center">Tu nuevo vehículo está acá</h1>
 </div>
+<FirebaseApp {firebase} perf analytics >
 <div class="uk-card-body">
-<form class="uk-grid-small" uk-grid>
-	
+<form on:submit|preventDefault class="uk-grid-small" uk-grid>
+
+  <Collection path={`categoria`} let:data={selTipos} let:ref log>
+    <div slot="loading"><div uk-spinner></div></div>
     <div class="uk-width-1-2@s">
-        <input class="uk-input" type="text" placeholder="Categoria">
+      <select class="uk-select" bind:value={selectedTipo} >
+        <option value="" selected>Seleccionar tipo de vehículo</option>
+        {#each selTipos as tipo, i}
+          <option value={tipo.nombre}>{tipo.nombre}</option>
+        {/each}
+      </select>
     </div>
+  </Collection>
+
+  <Collection path={`marcas`} let:data={selMarca} let:ref log>
+  <div slot="loading"><div uk-spinner></div></div>
     <div class="uk-width-1-4@s">
-        <input class="uk-input" type="text" placeholder="Marca">
+      <select class="uk-select" bind:value={selectedMarca} >
+        <option value="" selected>Seleccionar Marca</option>
+        {#each selMarca as marca, i}
+          <option value={marca.nombre}>{marca.nombre}</option>
+        {/each}
+      </select>
     </div>
+  </Collection> 
+
+  <Collection path={`autos`} 
+  query={ref => ref.where('tipo', '==', `${selectedTipo}` ).where('marca', '==', `${selectedMarca}` )} let:data={selModelo} let:ref log>
+  <div slot="loading"><div uk-spinner></div></div>
     <div class="uk-width-1-4@s">
-        <input class="uk-input" type="text" placeholder="Modelo">
+      <select class="uk-select" bind:value={selectedModelo} disabled={!selectedTipo || !selectedMarca}>
+          <option>Seleccionar Modelo</option>
+        {#each selModelo as modelo, index}
+          <option value={modelo.modelo}>{modelo.modelo}</option>
+        {/each}
+      </select>
     </div>
-   <div class="uk-width-1-4@s">
-        <input class="uk-input" type="text" placeholder="Precio desde">
-    </div>
-    <div class="uk-width-1-4@s">
-        <input class="uk-input" type="text" placeholder="Precio hasta">
-    </div>
-    <div class="uk-width-1-4@s">
-        <input class="uk-input" type="text" placeholder="Año desde">
-    </div>
-    <div class="uk-width-1-4@s">
-        <input class="uk-input" type="text" placeholder="Año hasta">
-    </div>
-    <div class="uk-width-1-1">
-    	<button class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Buscar</button>
-	</div>
+  </Collection> 
+
+ <div class="uk-width-1-4@s">
+    <input class="uk-input" type="text" placeholder="Precio desde">
+  </div>
+  <div class="uk-width-1-4@s">
+    <input class="uk-input" type="text" placeholder="Precio hasta">
+  </div>
+  <div class="uk-width-1-4@s">
+    <input class="uk-input" type="text" placeholder="Año desde">
+  </div>
+  <div class="uk-width-1-4@s">
+    <input class="uk-input" type="text" placeholder="Año hasta">
+  </div>
+
+
+  <div class="uk-width-1-1">
+    <button class="uk-button uk-button-primary uk-width-1-1 uk-button-large">Buscar</button>
+  </div>
+
+
 
 </form>
 </div>
+
+</FirebaseApp>
 </div>
 
 
