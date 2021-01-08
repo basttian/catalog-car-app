@@ -203,7 +203,7 @@ let promise;
     	</Collection>
     </div>
     <div class="uk-width-1-2@s"> 
-        <Collection path={`marcas`} let:data={selectMarcas} let:ref on:ref log>
+        <Collection path={`marcas`} query={ (ref) => ref.where("tipo","==",`${tipo}`) } let:data={selectMarcas} let:ref on:ref log>
 		<div slot="loading"><div uk-spinner></div></div>
         <select class="uk-select" bind:value={marca}>
         	{#each selectMarcas as item, index}

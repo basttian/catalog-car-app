@@ -13,10 +13,11 @@ let data;
 export let router;
 
 //Data
+
+let tipo,marca;
+
 let vehiculo = 
 { nuevo:true,
-  tipo:"",
-  marca:"",
   modelo:"",
   anio:"",
   moneda:"$",
@@ -93,9 +94,8 @@ async function Upload (f,archivos) {
       <!-- Categorias -->
       <Collection path={'categoria'} query={ (ref) => ref.orderBy("nombre", "asc")} log let:data let:ref >
       <div slot="loading"><div uk-spinner></div></div>
-      <select class="uk-select" bind:value={vehiculo.tipo}>
+      <select class="uk-select" bind:value={tipo}>
             <option value="" selected="">Seleccionar tipo</option>}
-            option
           {#each data as item, index}
             <option value={item.nombre}>{item.nombre}</option>
           {/each}
@@ -107,9 +107,9 @@ async function Upload (f,archivos) {
     <div class="uk-flex uk-flex-middle">
       <Link href="/marcas"><a class="uk-padding-small" href="" uk-icon="icon: plus"></a></Link>
       <!-- Marca -->
-      <Collection path={'marcas'} query={ (ref) => ref.orderBy("nombre", "asc")} log let:data let:ref >
+      <Collection path={'marcas'} query={ (ref) => ref.where("tipo","==",`${tipo}`) } log let:data let:ref >
       <div slot="loading"><div uk-spinner></div></div>
-      <select class="uk-select" bind:value={vehiculo.marca}>
+      <select class="uk-select" bind:value={marca}>
           <option value="" selected>Seleccionar marca</option>}
         {#each data as item, index}  
           <option  value={item.nombre}>{item.nombre}</option>
@@ -181,8 +181,8 @@ async function Upload (f,archivos) {
         var folder_img = new Date().getTime();
         promise = ref.add({
           nuevo:vehiculo.nuevo,
-          tipo:vehiculo.tipo,
-          marca:vehiculo.marca,
+          tipo:tipo,
+          marca:marca,
           modelo:vehiculo.modelo,
           año:vehiculo.anio,
           moneda:vehiculo.moneda,
@@ -196,8 +196,8 @@ async function Upload (f,archivos) {
           }).then(()=>{
             Upload(folder_img, files);
             vehiculo.nuevo=true;
-            vehiculo.tipo="";
-            vehiculo.marca="";
+            tipo="";
+            marca="";
             vehiculo.modelo="";
             vehiculo.anio="";
             vehiculo.moneda="$";
@@ -214,7 +214,7 @@ async function Upload (f,archivos) {
           })
 
       })}
-    disabled={!vehiculo.modelo || !vehiculo.marca || !vehiculo.precio }>Agregar</button>
+    disabled={!tipo || !vehiculo.modelo || !marca || !vehiculo.precio }>Agregar</button>
   </div>
 </form>
 
