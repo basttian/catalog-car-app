@@ -24,7 +24,7 @@ firebase.firestore().collection('categoria').orderBy('nombre','asc').onSnapshot(
 <FirebaseApp {firebase} perf analytics>
 <User let:user let:auth>
 <div class="uk-container uk-margin-large-bottom">
-<Collection path={`marcas`} let:data={marcas} let:ref on:ref log>
+<Collection path={`marcas`} query={(ref) => ref.orderBy("nombre", "asc")} let:data={marcas} let:ref on:ref log>
 <div slot="loading"><div uk-spinner></div></div>
 
 <h1 class="uk-heading-divider">Marcas</h1>
