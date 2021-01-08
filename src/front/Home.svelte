@@ -42,11 +42,10 @@ let selectedTipo,selectedMarca,selectedModelo;
 <div class="uk-card-body">
 <form on:submit|preventDefault class="uk-grid-small" uk-grid>
 
-  <Collection path={`categoria`} let:data={selTipos} let:ref log>
+  <Collection path={`categoria`} query={(ref) => ref.orderBy("nombre", "asc")} let:data={selTipos} let:ref log>
     <div slot="loading"><div uk-spinner></div></div>
     <div class="uk-width-1-2@s">
       <select class="uk-select" bind:value={selectedTipo} >
-        <option value="" selected>Seleccionar tipo de vehículo</option>
         {#each selTipos as tipo, i}
           <option value={tipo.nombre}>{tipo.nombre}</option>
         {/each}
@@ -54,7 +53,7 @@ let selectedTipo,selectedMarca,selectedModelo;
     </div>
   </Collection>
 
-  <Collection path={`marcas`} let:data={selMarca} let:ref log>
+  <Collection path={`marcas`} query={(ref) => ref.where("tipo","==",`${selectedTipo}`)} let:data={selMarca} let:ref log>
   <div slot="loading"><div uk-spinner></div></div>
     <div class="uk-width-1-4@s">
       <select class="uk-select" bind:value={selectedMarca} >
