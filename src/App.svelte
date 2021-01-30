@@ -20,6 +20,11 @@ firebase.initializeApp(firebaseConfig);
 import HOME from "./front/Home.svelte";
 import BACKHOME from "./back/_Home.svelte";
 
+// Todos los vehiculos
+
+import TODOS from "./front/Todos.svelte";
+
+
 </script>
 
 <main>
@@ -29,11 +34,10 @@ import BACKHOME from "./back/_Home.svelte";
 	<!-- Si no se encuentra logueado -->
 		<div slot="signed-out">
 			<HOME/>
+            <TODOS/>
     	</div>
-
     <!-- Si esta logueado -->
     <BACKHOME/>
-
 	</User>
 </FirebaseApp>
 
