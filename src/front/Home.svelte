@@ -16,10 +16,26 @@ let selectedTipo,selectedMarca,selectedModelo;
 
 let busquedas=[];
 
+let show = true;
+let showbrand = true;
+
+function HideTipeVehicle(){
+  show = false;
+  showbrand = true;
+}
+
+function HideBrandVehicle(){
+  show = false;
+  showbrand = false;
+}
+
+
 </script>
 <FirebaseApp {firebase} perf analytics>
 <User let:user let:auth>
 <div slot="signed-out">
+
+
 <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
     data-src="images/frente.jpg"
     data-srcset="images/frente.jpg"
@@ -32,6 +48,7 @@ let busquedas=[];
       <a href="#modal-container" uk-toggle class="uk-float-right" uk-icon="icon:user; ratio: 1.5"></a>
     </div>
 </div>
+
 
 <FirebaseApp {firebase} perf analytics >
 <div class="uk-container uk-margin-medium-top uk-margin-xlarge-bottom">
@@ -47,7 +64,8 @@ let busquedas=[];
   <Collection path={`categoria`} query={(ref) => ref.orderBy("nombre", "asc")} let:data={selTipos} let:ref log>
     <div slot="loading"><div uk-spinner></div></div>
     <div class="uk-width-1-2@s">
-      <select class="uk-select" bind:value={selectedTipo} >
+      <select class="uk-select" bind:value={selectedTipo} on:change={()=>show=true} >
+        <option value="" selected>Seleccionar tipo de vehículo</option>
         {#each selTipos as tipo, i}
           <option value={tipo.nombre}>{tipo.nombre}</option>
         {/each}
@@ -59,7 +77,7 @@ let busquedas=[];
   <Collection path={`marcas`} query={(ref) => ref.where("tipo","==",`${selectedTipo}`)} let:data={selMarca} let:ref log>
   <div slot="loading"><div uk-spinner></div></div>
     <div class="uk-width-1-4@s">
-      <select class="uk-select" bind:value={selectedMarca} >
+      <select class="uk-select" bind:value={selectedMarca} on:change={()=> HideTipeVehicle()}>
         <option value="" selected>Marcas disponibles</option>
         {#each selMarca as marca, i}
           <option value={marca.nombre}>{marca.nombre}</option>
@@ -75,7 +93,8 @@ let busquedas=[];
     <div class="uk-width-1-4@s">
 
       {#if selModelo.length >= 1}
-      <select class="uk-select" bind:value={selectedModelo} disabled={!selectedTipo || !selectedMarca}>
+      <select class="uk-select" bind:value={selectedModelo} disabled={!selectedTipo || !selectedMarca} on:change={()=> HideBrandVehicle()}>
+          <option value="">Modelos disponibles</option>
           {#each selModelo as modelo, index}
             <option value={modelo.modelo}>{modelo.modelo}</option>
           {/each}
@@ -120,6 +139,9 @@ let busquedas=[];
 
 <!-- Resultados -->
 
+
+{#if show}
+
 <Collection path={'autos'} let:data={busquedas} let:ref log  
 query={(ref) => ref.where("tipo","==",`${selectedTipo}`)} >
 <div slot="loading"><div uk-spinner></div></div>
@@ -138,6 +160,12 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`)} >
   </div>
 {/each}
 </div>
+</Collection>
+
+{/if}
+
+{#if !show && showbrand}
+
 <Collection path={'autos'} let:data={busquedas} let:ref log  
 query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${selectedMarca}`)} >
 <div slot="loading"><div uk-spinner></div></div>
@@ -156,6 +184,10 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
   </div>
 {/each}
 </div>
+</Collection>
+
+{/if}
+
 <Collection path={'autos'} let:data={busquedas} let:ref log  
 query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${selectedMarca}`).where("modelo","==",`${selectedModelo}`)} >
 <div slot="loading"><div uk-spinner></div></div>
@@ -174,14 +206,14 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
   </div>
 {/each}
 </div>
-</Collection>
-</Collection>
-</Collection>
+</Collection> 
+
 
 
 
 </div>
 </FirebaseApp>
+
 <!-- MODAL LOGIN -->
 <div id="modal-container" class="uk-modal-container" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
@@ -221,9 +253,6 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
         </form>
     </div>
 </div>
-
-
-
 
 </div><!-- slot signed-out  -->
 </User>
