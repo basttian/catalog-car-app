@@ -1,8 +1,6 @@
 <script context="module">
 	import { FirebaseApp, Doc, Collection, User, UploadTask, StorageRef } from "sveltefire";
 	import firebase from "firebase/app";
-	import UIkit from 'uikit';
-	import Icons from 'uikit/dist/js/uikit-icons';
 	let idReg;
 	export function OpenModalFicha(id) {
 	  idReg = id;
