@@ -18,13 +18,12 @@ import Modal, {OpenModalFicha} from "./Ficha.svelte"
 </script>
 
 
-
 <div class="uk-container uk-container-expand uk-margin-medium-bottom">
 <div class="uk-slider-container-offset" uk-slider>
-<h1 class="uk-heading-bullet">Últimos productos</h1>
+<h1 class="uk-heading-bullet">Destacados</h1>
 
 <FirebaseApp {firebase} perf analytics>
-<Collection path={`autos`} let:data={autos} let:ref on:ref log>
+<Collection path={`autos`} query={ref => ref.where('featured', '==', true)} let:data={autos} let:ref on:ref log>
 <div slot="loading"><div uk-spinner></div></div>
 
 
@@ -61,12 +60,10 @@ import Modal, {OpenModalFicha} from "./Ficha.svelte"
 
                     </div>
                     <div class="uk-card-body hand" on:click={()=> OpenModalFicha(item.id) }>
-
                         <div class="uk-card-badge uk-label">{item.nuevo?"0 km":"Usado"}</div>
                         <h3 class="uk-card-title">{item.marca} {item.modelo}</h3>
                         <p>Año:{item.año}</p>
                         <p>{item.kilometros}Km</p>
-                        
                     </div>
                 </div>
             </li>

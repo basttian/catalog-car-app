@@ -6,10 +6,7 @@ import "firebase/auth";
 import "firebase/storage";
 import "firebase/performance"; // Optional
 import "firebase/analytics"; // Optional
-
-let usuario;
-let clave;
-let promise;
+import { Router, Route, Link, router, navigateTo } from 'yrv';
 
 let selTipos,selMarca,selModelo ;
 let selectedTipo,selectedMarca,selectedModelo;
@@ -29,26 +26,20 @@ function HideBrandVehicle(){
   showbrand = false;
 }
 
+var storage = firebase.storage();
+var storageRef = storage.ref();
+
+// Todos los vehiculos
+import TODOS from "./Todos.svelte";
+// Vehiculos destacados
+import DESTACADOS from "./Featured.svelte";
+
+
+import Modal, {OpenModalFicha} from "./Ficha.svelte"
 
 </script>
-<FirebaseApp {firebase} perf analytics>
-<User let:user let:auth>
-<div slot="signed-out">
 
-
-<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
-    data-src="images/frente.jpg"
-    data-srcset="images/frente.jpg"
-    data-sizes="(min-width: 650px) 650px, 100vw" uk-img>
-    <div class="uk-text-center uk-padding-small">
-        <h1 class="uk-margin-remove">MyCar</h1>
-        <p class="uk-margin-remove"></p>
-    </div>
-    <div class="uk-position-top uk-padding-small">
-      <a href="#modal-container" uk-toggle class="uk-float-right" uk-icon="icon:user; ratio: 1.5"></a>
-    </div>
-</div>
-
+<Modal/>
 
 <FirebaseApp {firebase} perf analytics >
 <div class="uk-container uk-margin-medium-top uk-margin-xlarge-bottom">
@@ -107,37 +98,11 @@ function HideBrandVehicle(){
 
     </div>
   </Collection> 
-
-<!-- 
-  <div class="uk-width-1-4@s">
-    <input class="uk-input" type="text" placeholder="Precio desde">
-  </div>
-  <div class="uk-width-1-4@s">
-    <input class="uk-input" type="text" placeholder="Precio hasta">
-  </div>
-  <div class="uk-width-1-4@s">
-    <input class="uk-input" type="text" placeholder="Año desde">
-  </div>
-  <div class="uk-width-1-4@s">
-    <input class="uk-input" type="text" placeholder="Año hasta">
-  </div> 
-
-  <div class="uk-width-1-1">
-    <button class="uk-button uk-button-primary uk-width-1-1 uk-button-large"
-    on:click={()=> 
-      console.log('')
-    }
-    >Buscar</button>
-  </div>
--->
-
-
-
 </form>
 </div>
 </div>
 
-<!-- Resultados -->
+<!-- --------------------------------Resultados----------------------------- -->
 
 
 {#if show}
@@ -148,15 +113,53 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`)} >
 <div class="uk-child-width-1-3@m uk-margin-top" uk-grid>
 {#each busquedas as item, index}
   <div>
-      <div class="uk-card uk-card-default">
-          <div class="uk-card-media-top">
-              <img src="images/light.jpg" alt="">
-          </div>
-          <div class="uk-card-body">
-              <h3 class="uk-card-title">{item.modelo}</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+    <!-- Producto -->
+    <div class="uk-card uk-card-default uk-width-1@m">
+      <div class="uk-card-header">
+          <div class="uk-grid-small uk-flex-middle" uk-grid>
+              <div class="uk-width-auto">
+                  <a href="" class="uk-icon-button" uk-icon="whatsapp"></a>
+              </div>
+              <div class="uk-width-expand">
+                  <h3 class="uk-card-title uk-margin-remove-bottom">{item.modelo}</h3>
+                  <p class="uk-text-meta uk-margin-remove-top">{item.año} | {item.kilometros} Km | <span class="uk-text-bold">{item.moneda}&nbsp;{item.precio}</span> </p>
+              </div>
           </div>
       </div>
+      <div class="uk-card-body">
+          <!-- Imagen -->
+          {#await storageRef.child(`${item.folder}`).listAll()}
+            <div uk-spinner></div>
+              {:then result}
+          <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow>
+              <div uk-lightbox="autoplay:true" >
+                <ul class="uk-slideshow-items">
+                    {#each result.items as item,i}
+                    <li>
+                        {#await item.getDownloadURL()}
+                            <div uk-spinner></div>
+                            {:then url} 
+                              <a class="uk-inline" href={url} data-caption={item.name} data-type="image">
+                                <img src={url} alt="">
+                              </a>
+                        {/await}
+                    </li>
+                    {/each}
+                </ul>
+              </div>
+              <a class="uk-slidenav-large uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+              <a class="uk-slidenav-large uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a> 
+          </div>
+              {:catch error}
+                  <p style="color: red">{error.message}</p>
+          {/await}
+          <!-- Fin Imagen -->
+      </div>
+      <div class="uk-card-footer">
+        <a class="uk-button uk-button-text"  href="#modal-ficha" on:click={()=> OpenModalFicha(item.id) } uk-toggle >Ver ficha técnica</a>
+      </div>
+    </div>
+    <!-- Fin producto -->
   </div>
 {/each}
 </div>
@@ -208,52 +211,11 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
 </div>
 </Collection> 
 
-
-
-
 </div>
 </FirebaseApp>
 
-<!-- MODAL LOGIN -->
-<div id="modal-container" class="uk-modal-container" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">Bienvenido!!</h2>
-        <p>Ingresa tu usuario y contraseña.</p>
-        <form class="uk-grid-small" uk-grid on:submit|preventDefault>
-          <div class="uk-width-1-1">
-              <input class="uk-input" bind:value={usuario} type="email" placeholder="Email">
-          </div>
-          <div class="uk-width-1-1">
-              <input class="uk-input" bind:value={clave} type="password" autocomplete="password" placeholder="Contraseña">
-          </div>
-          <div class="uk-width-1-1">
-            <button class="uk-button uk-button-primary uk-width-1-1 uk-button-large"
-              on:click={async ()=>{
-                promise = auth.signInWithEmailAndPassword( `${usuario}` , `${clave}`).then(even=>{
-                   //console.log("Login correcto") 
-                   UIkit.modal('#modal-container').hide().then(()=>{
-                    usuario="";
-                    clave="";
-                   })
-                }).catch(error=>{
-                  //console.log(error);
-                  var errorCode = error.code;
-                  var errorMessage = error.message;
-                  UIkit.notification({message: `<span uk-icon='icon: warning'></span> ${errorMessage}`,
-                    pos: 'bottom-center', 
-                    status: 'danger',
-                    timeout: 1000
-                  })
-                })
-              }}
-            >Ingresar&nbsp;{#await promise}<div uk-spinner></div>{/await}
-          </button>
-          </div>
-        </form>
-    </div>
-</div>
 
-</div><!-- slot signed-out  -->
-</User>
-</FirebaseApp>
+<!-- Section Todos los productos -->
+<TODOS/>
+<!-- Section destacados -->
+<DESTACADOS/>
