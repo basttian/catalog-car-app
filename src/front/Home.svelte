@@ -35,11 +35,9 @@ import TODOS from "./Todos.svelte";
 import DESTACADOS from "./Featured.svelte";
 
 
-import Modal, {OpenModalFicha} from "./Ficha.svelte"
+import {OpenModalFicha} from "./Ficha.svelte"
 
 </script>
-
-<Modal/>
 
 <FirebaseApp {firebase} perf analytics >
 <div class="uk-container uk-margin-medium-top uk-margin-xlarge-bottom">
@@ -156,7 +154,7 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`)} >
           <!-- Fin Imagen -->
       </div>
       <div class="uk-card-footer">
-        <a class="uk-button uk-button-text"  href="#modal-ficha" on:click={()=> OpenModalFicha(item.id) } uk-toggle >Ver ficha técnica</a>
+        <a class="uk-button uk-button-text" on:click={()=> OpenModalFicha(item.id) } >Ver ficha técnica</a>
       </div>
     </div>
     <!-- Fin producto -->

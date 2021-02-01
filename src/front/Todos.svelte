@@ -13,7 +13,7 @@ let autos;
 var storage = firebase.storage();
 var storageRef = storage.ref();
 
-import Modal, {OpenModalFicha} from "./Ficha.svelte"
+import {OpenModalFicha} from "./Ficha.svelte"
 
 </script>
 
