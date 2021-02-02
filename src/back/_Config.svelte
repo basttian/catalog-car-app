@@ -40,7 +40,7 @@ import {buscarTabla} from "./buscar.js";
           <label><input class="uk-checkbox" type="checkbox" bind:checked={contactoEnLinea} > Contacto en linea</label>
         </div>
 				<div class="uk-margin">
-					<label><input class="uk-input" bind:value={nombre} placeholder="Nombre" autofocus ></label>
+					<label><input class="uk-input" bind:value={nombre} placeholder="Nombre" ></label>
 				</div>
 				<div class="uk-margin">
 					<label><input class="uk-input" type="number" bind:value={telefono} placeholder="Telefono"></label>
