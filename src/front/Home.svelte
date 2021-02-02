@@ -116,7 +116,12 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`)} >
       <div class="uk-card-header">
           <div class="uk-grid-small uk-flex-middle" uk-grid>
               <div class="uk-width-auto">
-                  <a href="" class="uk-icon-button" uk-icon="whatsapp"></a>
+                <Collection path={'asesores'} let:data let:ref log 
+                query={(ref) => ref.where("contactoEnLinea","==",true).limit(1)} >
+                  {#each data as value}
+                  <a class="uk-icon-button uk-margin-small-right" href="https://api.whatsapp.com/send?phone={value.telefono}&text=Hola%20{value.nombre}!!%20Mi%20consulta%20es%20por%20el%20{item.marca}%20{item.modelo}%20de%20${item.precio}." target="_blank" uk-icon="whatsapp"></a>
+                  {/each}
+                </Collection>
               </div>
               <div class="uk-width-expand">
                   <h3 class="uk-card-title uk-margin-remove-bottom">{item.modelo}</h3>
