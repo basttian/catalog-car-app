@@ -178,15 +178,58 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
 <div class="uk-child-width-1-3@m uk-margin-top" uk-grid>
 {#each busquedas as item, index}
   <div>
-      <div class="uk-card uk-card-default">
-          <div class="uk-card-media-top">
-              <img src="images/light.jpg" alt="">
-          </div>
-          <div class="uk-card-body">
-              <h3 class="uk-card-title">{item.modelo}</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+    <!-- Producto -->
+    <div class="uk-card uk-card-default uk-width-1@m">
+      <div class="uk-card-header">
+          <div class="uk-grid-small uk-flex-middle" uk-grid>
+              <div class="uk-width-auto">
+                <Collection path={'asesores'} let:data let:ref log 
+                query={(ref) => ref.where("contactoEnLinea","==",true).limit(1)} >
+                  {#each data as value}
+                  <a class="uk-icon-button uk-margin-small-right" href="https://api.whatsapp.com/send?phone={value.telefono}&text=Hola%20{value.nombre}!!%20Mi%20consulta%20es%20por%20el%20{item.marca}%20{item.modelo}%20de%20${item.precio}." target="_blank" uk-icon="whatsapp"></a>
+                  {/each}
+                </Collection>
+              </div>
+              <div class="uk-width-expand">
+                  <h3 class="uk-card-title uk-margin-remove-bottom">{item.modelo}</h3>
+                  <p class="uk-text-meta uk-margin-remove-top">{item.año} | {item.kilometros} Km | <span class="uk-text-bold">{item.moneda}&nbsp;{item.precio}</span> </p>
+              </div>
           </div>
       </div>
+      <div class="uk-card-body">
+          <!-- Imagen -->
+          {#await storageRef.child(`${item.folder}`).listAll()}
+            <div uk-spinner></div>
+              {:then result}
+          <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow>
+              <div uk-lightbox="autoplay:true" >
+                <ul class="uk-slideshow-items">
+                    {#each result.items as item,i}
+                    <li>
+                        {#await item.getDownloadURL()}
+                            <div uk-spinner></div>
+                            {:then url} 
+                              <a class="uk-inline" href={url} data-caption={item.name} data-type="image">
+                                <img src={url} alt="">
+                              </a>
+                        {/await}
+                    </li>
+                    {/each}
+                </ul>
+              </div>
+              <a class="uk-slidenav-large uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+              <a class="uk-slidenav-large uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a> 
+          </div>
+              {:catch error}
+                  <p style="color: red">{error.message}</p>
+          {/await}
+          <!-- Fin Imagen -->
+      </div>
+      <div class="uk-card-footer">
+        <a class="uk-button uk-button-text" on:click={()=> OpenModalFicha(item.id) } >Ver ficha técnica</a>
+      </div>
+    </div>
+    <!-- Fin producto -->
   </div>
 {/each}
 </div>
@@ -200,15 +243,58 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
 <div class="uk-child-width-1-3@m uk-margin-top" uk-grid>
 {#each busquedas as item, index}
   <div>
-      <div class="uk-card uk-card-default">
-          <div class="uk-card-media-top">
-              <img src="images/light.jpg" alt="">
-          </div>
-          <div class="uk-card-body">
-              <h3 class="uk-card-title">{item.modelo}</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+    <!-- Producto -->
+    <div class="uk-card uk-card-default uk-width-1@m">
+      <div class="uk-card-header">
+          <div class="uk-grid-small uk-flex-middle" uk-grid>
+              <div class="uk-width-auto">
+                <Collection path={'asesores'} let:data let:ref log 
+                query={(ref) => ref.where("contactoEnLinea","==",true).limit(1)} >
+                  {#each data as value}
+                  <a class="uk-icon-button uk-margin-small-right" href="https://api.whatsapp.com/send?phone={value.telefono}&text=Hola%20{value.nombre}!!%20Mi%20consulta%20es%20por%20el%20{item.marca}%20{item.modelo}%20de%20${item.precio}." target="_blank" uk-icon="whatsapp"></a>
+                  {/each}
+                </Collection>
+              </div>
+              <div class="uk-width-expand">
+                  <h3 class="uk-card-title uk-margin-remove-bottom">{item.modelo}</h3>
+                  <p class="uk-text-meta uk-margin-remove-top">{item.año} | {item.kilometros} Km | <span class="uk-text-bold">{item.moneda}&nbsp;{item.precio}</span> </p>
+              </div>
           </div>
       </div>
+      <div class="uk-card-body">
+          <!-- Imagen -->
+          {#await storageRef.child(`${item.folder}`).listAll()}
+            <div uk-spinner></div>
+              {:then result}
+          <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow>
+              <div uk-lightbox="autoplay:true" >
+                <ul class="uk-slideshow-items">
+                    {#each result.items as item,i}
+                    <li>
+                        {#await item.getDownloadURL()}
+                            <div uk-spinner></div>
+                            {:then url} 
+                              <a class="uk-inline" href={url} data-caption={item.name} data-type="image">
+                                <img src={url} alt="">
+                              </a>
+                        {/await}
+                    </li>
+                    {/each}
+                </ul>
+              </div>
+              <a class="uk-slidenav-large uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+              <a class="uk-slidenav-large uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a> 
+          </div>
+              {:catch error}
+                  <p style="color: red">{error.message}</p>
+          {/await}
+          <!-- Fin Imagen -->
+      </div>
+      <div class="uk-card-footer">
+        <a class="uk-button uk-button-text" on:click={()=> OpenModalFicha(item.id) } >Ver ficha técnica</a>
+      </div>
+    </div>
+    <!-- Fin producto -->
   </div>
 {/each}
 </div>
