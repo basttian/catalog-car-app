@@ -17,6 +17,7 @@ import Cat from './_Cat.svelte';
 import Brand from './_Brand.svelte';
 import List from './_List.svelte';
 import Car from './_Car.svelte';
+import Config from './_Config.svelte';
 
 </script>
 <FirebaseApp {firebase} perf analytics>
@@ -31,6 +32,7 @@ import Car from './_Car.svelte';
   <Route path="/marcas" exact component={Brand} />
   <Route path="/lista" exact component={List} />
   <Route path="/lista/:id" exact component={Car} />
+  <Route path="/system" exact component={Config} />
 </Router>
 
 
