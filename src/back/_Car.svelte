@@ -75,7 +75,7 @@ async function Upload (f,archivos) {
 
 
 // Variables
-let estado,tipo,marca,modelo,anio,precio,motor,kilometros,descripcion;
+let estado,tipo,marca,modelo,anio,precio,motor,kilometros,descripcion,featured;
 //Select
 let selectTipos;
 let selectMarcas;
@@ -187,7 +187,10 @@ let promise;
         checked = {autoData.nuevo == false ? 'checked' : '' } 
         on:change = {() => estado = false }         
         > Usado</label>
-      
+        <label>
+          <input class="uk-checkbox" type="checkbox" bind:this={featured}
+          checked={autoData.featured==true ? true : false } 
+          > Destacado</label>
     </div>
     <div class="uk-width-1-2@s"> 
         <Collection path={`categoria`} let:data={selectTipos} let:ref on:ref log>
@@ -273,9 +276,8 @@ let promise;
     	<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-top uk-button-large" on:click={()=>
 
         Upload(autoData.folder, files).then(()=>{
-          
-
           promise = autoRef.update({
+          updatedAt : new Date().getTime(),
           nuevo:typeof estado==='undefined'?autoData.nuevo:estado,//rare don't use
           tipo:tipo,
           marca:marca,
@@ -288,9 +290,10 @@ let promise;
           transmision:selectedtra,
           kilometros:kilometros.value,
           descripcion:descripcion.value,
+          featured:featured.checked,
           folder: autoData.folder,
           }).then(()=>{
-            UIkit.notification({message: "<span uk-icon='icon: check'></span> Actualizado con éxito.", pos: 'top-right', status: 'primary'});
+            UIkit.notification({message: "<span uk-icon='icon: check'></span> Actualizado con éxito.", pos: 'top-center', status: 'primary'});
           }).catch((e)=>{
             console.log(e);
           })

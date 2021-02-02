@@ -44,7 +44,7 @@ export let email;
 				<a on:click={() => navigateTo(router.path =`/system`) }
 				class="uk-icon-link uk-margin-small-right" uk-icon="cog" uk-tooltip="title: Configuración; pos: bottom"></a>
 				<a on:click={() => 
-		          UIkit.modal.confirm('Cerrar sesión.').then(function() {
+		          UIkit.modal.confirm('<h3>Cerrar sesión.</h3><small>Esta seguro que desea salir del sistema..</small>').then(function() {
 		            //console.log('Confirmed.')
 		          auth.signOut().then(resp => {
 		          UIkit.notification({
@@ -58,7 +58,7 @@ export let email;
 		          }, function () {
 		            //console.log('Rejected.')
 		          })}
-		          class="uk-icon-link uk-float-right" uk-icon="sign-out" uk-tooltip="title: Salir; pos: bottom"></a>
+		          class="uk-icon-link uk-float-right" uk-icon="sign-out" uk-tooltip="title: Salir; pos: bottom"> Salir </a>
 	        </p>
 	        <div>
 	        	<hr>
@@ -72,22 +72,7 @@ export let email;
 
 
 	        <div class="uk-position-bottom uk-margin-small-left uk-margin-small-bottom">
-	        	<a on:click={() => 
-		          UIkit.modal.confirm('Cerrar sesión.').then(function() {
-		            //console.log('Confirmed.')
-		          auth.signOut().then(resp => {
-		          UIkit.notification({
-		          message: '<span uk-icon=\'icon: check\'></span> Desconexión satisfactoria.', 
-		          status: 'secondary',
-		          pos: 'bottom-center',
-		          timeout: 1000
-		          }); 
-		          	navigateTo(router.path =`/`);   
-		          });
-		          }, function () {
-		            //console.log('Rejected.')
-		          })}
-		      	><span uk-icon="icon: sign-out"></span> Salir</a>
+	       
 	        </div>
 	    </User>
 		</FirebaseApp>

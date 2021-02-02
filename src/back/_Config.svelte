@@ -10,6 +10,7 @@ let id = null;
 let nombre;
 let telefono;
 let email;
+let facebook;
 let txtbuscar;
 
 let contactoEnLinea = false;
@@ -40,24 +41,27 @@ import {buscarTabla} from "./buscar.js";
           <label><input class="uk-checkbox" type="checkbox" bind:checked={contactoEnLinea} > Contacto en linea</label>
         </div>
 				<div class="uk-margin">
-					<label><input class="uk-input" bind:value={nombre} placeholder="Nombre" ></label>
+					<label><input class="uk-input" bind:value={nombre} placeholder="Nombre y apellido" ></label>
 				</div>
 				<div class="uk-margin">
-					<label><input class="uk-input" type="number" bind:value={telefono} placeholder="Telefono"></label>
+					<label><input class="uk-input" type="tel" bind:value={telefono} placeholder="(Código de área) Número"></label>
 				</div>
 				<div class="uk-margin">
 					<label><input class="uk-input" type="email" bind:value={email} placeholder="Email"></label>
 				</div>
+				<div class="uk-margin">
+					<label><input class="uk-input" type="text" bind:value={facebook} placeholder="Usuario de facebook"></label>
+				</div>
 				<input bind:value={id} type="hidden">
 
 				<div class="uk-margin">
-					<button class="uk-button uk-button-default" on:click={ ()=> asesorRef.add({nombre:nombre,telefono:telefono,email:email.toLowerCase(),contactoEnLinea:contactoEnLinea}).then(()=>{nombre='';telefono=''; email='';contactoEnLinea=false}) } disabled="{!nombre || !telefono || id!=null }">Crear nuevo asesor de venta</button>
+					<button class="uk-button uk-button-default" on:click={ ()=> asesorRef.add({nombre:nombre,telefono:telefono,email:email.toLowerCase(),contactoEnLinea:contactoEnLinea,facebook:facebook}).then(()=>{nombre='';telefono=''; email='';contactoEnLinea=false;facebook=''}) } disabled="{!nombre || !telefono || id!=null }">Crear nuevo asesor de venta</button>
 				</div>
 
 				<Doc path={`asesores/${id}`} let:data let:ref log >
 					<div slot="loading">Loading...</div>
 					<div class="uk-button-group">
-				    <button class="uk-button uk-button-default" on:click={ ()=> ref.update({nombre:nombre,telefono:telefono,email:email.toLowerCase(),contactoEnLinea:contactoEnLinea}).then(()=>{id = null; txtbuscar =''; nombre='';telefono=''; email='';contactoEnLinea=false})} disabled="{!nombre || !telefono || id===null }"
+				    <button class="uk-button uk-button-default" on:click={ ()=> ref.update({nombre:nombre,telefono:telefono,email:email.toLowerCase(),contactoEnLinea:contactoEnLinea,facebook:facebook}).then(()=>{id = null; txtbuscar =''; nombre='';telefono=''; email='';contactoEnLinea=false;facebook=''})} disabled="{!nombre || !telefono || id===null }"
 				    >Actualizar</button>
 				    <button class="uk-button uk-button-default" on:click={ ()=> ref.delete().then(()=>{id = null; txtbuscar ='';nombre='';telefono=''; email=''})}>Delete</button>
 					</div>
@@ -88,15 +92,17 @@ import {buscarTabla} from "./buscar.js";
 		          <th>Asesor</th>
 		          <th>Teléfono</th>
 		          <th>Email</th>
+		          <th>Facebook</th>
 		          <th></th>
 		        </tr>
 		    </thead>
 		    <tbody>
 		    	{#each data as item}
-		        <tr class="hand" on:click={()=> {id = item.id ;nombre = item.nombre ;telefono=item.telefono; email=item.email;contactoEnLinea=item.contactoEnLinea }}>
+		        <tr class="hand" on:click={()=> {id = item.id ;nombre = item.nombre ;telefono=item.telefono; email=item.email;contactoEnLinea=item.contactoEnLinea;facebook=item.facebook }}>
 		          <td>{item.nombre}</td>
 		          <td>{item.telefono}</td>
 		          <td>{item.email}</td>
+		          <td>{item.facebook}</td>
 		          <td>{@html item.contactoEnLinea ? tagOnlineTrue : tagOnlineFalse }</td>
 		        </tr>
 		      {/each}

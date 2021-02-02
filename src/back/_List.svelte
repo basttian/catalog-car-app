@@ -26,6 +26,11 @@ const deleteFolderImg = (path) =>{
     });
 }
 
+
+let destacadoOk = `<span uk-icon="icon: check"></span>`;
+let destacadoNoOk = `<span uk-icon="icon: close"></span>`;
+
+
 </script>
 
 <FirebaseApp {firebase} perf analytics>
@@ -56,6 +61,7 @@ const deleteFolderImg = (path) =>{
             <th>Motor</th>
             <th>Transmision</th>
             <th>Precio</th>
+            <th>Destacado</th>
         </tr>
     </thead>
     <tbody>
@@ -90,12 +96,22 @@ const deleteFolderImg = (path) =>{
 	            <td  class="hand" on:click={()=> navigateTo(router.path =`/lista/${item.id}`) }>{item.motor}</td>
 	            <td  class="hand" on:click={()=> navigateTo(router.path =`/lista/${item.id}`) }>{item.transmision}</td>
 	            <td  class="hand" on:click={()=> navigateTo(router.path =`/lista/${item.id}`) }>{item.moneda}&nbsp;{item.precio}</td>
+                <td  class="hand" on:click={()=> navigateTo(router.path =`/lista/${item.id}`) }>{ @html item.featured ? destacadoOk : destacadoNoOk }</td>
 	        </tr>
         {/each}
     </tbody>
 </table>
 </div>
 </Collection>
+
+    <Link href="/" uk-marker class="
+    btn-flotante
+    uk-border-circle 
+    uk-background-primary
+    uk-padding-small
+    uk-hover
+    "></Link>
+    
 </div>
 </User>
 </FirebaseApp>

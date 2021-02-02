@@ -21,10 +21,10 @@ import {OpenModalFicha} from "./Ficha.svelte"
 
 <div class="uk-container uk-container-expand uk-margin-medium-bottom">
 <div class="uk-slider-container-offset" uk-slider>
-<h1 class="uk-heading-bullet">Últimos productos</h1>
+<h1 class="uk-heading-bullet">Últimos</h1>
 
 <FirebaseApp {firebase} perf analytics>
-<Collection path={`autos`} let:data={autos} let:ref on:ref log>
+<Collection path={`autos`} let:data={autos} query={ref => ref.limit(10)} let:ref on:ref log>
 <div slot="loading"><div uk-spinner></div></div>
 
 

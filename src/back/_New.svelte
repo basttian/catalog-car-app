@@ -27,6 +27,7 @@ let vehiculo =
   transmision:"Manual",
   km:"",
   descripcion:"",
+  featured:false,
 };
 
 let promise;
@@ -87,6 +88,7 @@ async function Upload (f,archivos) {
   <div class="uk-width-1-1">
     <label><input class="uk-radio" type="radio" name="radio2" bind:group={vehiculo.nuevo} value={true}> Nuevo</label>
     <label><input class="uk-radio" type="radio" name="radio2" bind:group={vehiculo.nuevo} value={false}> Usado</label>
+    <label><input class="uk-checkbox" bind:checked={vehiculo.featured} type="checkbox"> Destacado</label>
   </div>
   <div class="uk-width-1-1">
     <div class="uk-flex uk-flex-middle">
@@ -180,6 +182,7 @@ async function Upload (f,archivos) {
       on:click={(()=>{
         var folder_img = new Date().getTime();
         promise = ref.add({
+          createdAt : new Date().getTime(),
           nuevo:vehiculo.nuevo,
           tipo:tipo,
           marca:marca,
@@ -193,6 +196,7 @@ async function Upload (f,archivos) {
           kilometros:vehiculo.km,
           descripcion:vehiculo.descripcion,
           folder: folder_img,
+          featured: vehiculo.featured,
           }).then(()=>{
             Upload(folder_img, files);
             vehiculo.nuevo=true;
@@ -208,6 +212,7 @@ async function Upload (f,archivos) {
             vehiculo.km="";
             vehiculo.descripcion="";
             files=null;
+            vehiculo.featured=false;
             UIkit.notification({message: "<span uk-icon='icon: check'></span> Agregado con éxito.", pos: 'bottom-center', status: 'primary'});
           }).catch((e)=>{
             console.log(e);
