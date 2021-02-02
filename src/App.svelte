@@ -145,14 +145,14 @@ import { selection } from "./store/store.js";
                 {/each}
                 </Collection>
 
-                <Collection path={'asesores'} let:data let:ref log >
+                <Collection path={'asesores'} let:data let:ref log query={(ref) => ref.where("contactoEnLinea","==",false)} >
                   <div slot="loading"><div uk-spinner></div></div>
                   <button on:click={()=> contacto = true } class="uk-icon-button" uk-icon="receiver"></button>
                   {#if contacto}
                     <hr>
                     <ul class="uk-list uk-list-divider">
                       {#each data as value}
-                        <li>{value.nombre} - <a href="tel:+{value.telefono}" >{value.telefono}</a></li>
+                        <li><a class="uk-link-heading" href="tel:+{value.telefono}" > <span uk-icon="icon: phone"></span> {value.nombre} | {value.telefono}</a></li>
                       {/each}
                     </ul>
                   {/if}
