@@ -21,6 +21,9 @@ let usuario;
 let clave;
 let promise;
 
+let dataAsesores;
+let contacto = false;
+
 import PAGE from "./front/Page.svelte";
 import BACKHOME from "./back/_Home.svelte";
 
@@ -128,6 +131,33 @@ import { selection } from "./store/store.js";
                       </tr>
                     </tfoot>
                 </table>
+
+                
+                <h3 class="uk-heading-divider">Solicitar información <span uk-icon="chevron-double-right"></span> {data.marca} - {data.modelo}</h3>
+
+                <Collection path={'asesores'} let:data={dataAsesores} let:ref log 
+                query={(ref) => ref.where("contactoEnLinea","==",true).limit(1)} >
+                <div slot="loading"><div uk-spinner></div></div>
+                {#each dataAsesores as value}
+                  <a on:click={()=>UIkit.modal('#modal-container-ficha').hide()} href="https://api.whatsapp.com/send?phone={value.telefono}&text=Consulta%20por%20el%20{data.marca}%20-%20{data.modelo}" class="uk-icon-button uk-margin-small-right" uk-icon="whatsapp" target="_blank"></a>
+                  <a on:click={()=>UIkit.modal('#modal-container-ficha').hide()} href="https://www.messenger.com/t/{value.facebook}" class="uk-icon-button  uk-margin-small-right" uk-icon="facebook" target="_blank"></a>
+                  <a on:click={()=>UIkit.modal('#modal-container-ficha').hide()} href="mailto:{value.email}?subject=Consulta&body={data.marca}-{data.modelo}" class="uk-icon-button  uk-margin-small-right" uk-icon="mail" target="_blank"></a>
+                {/each}
+                </Collection>
+
+                <Collection path={'asesores'} let:data let:ref log >
+                  <div slot="loading"><div uk-spinner></div></div>
+                  <button on:click={()=> contacto = true } class="uk-icon-button" uk-icon="receiver"></button>
+                  {#if contacto}
+                    <hr>
+                    <ul class="uk-list uk-list-divider">
+                      {#each data as value}
+                        <li>{value.nombre} - {value.telefono}</li>
+                      {/each}
+                    </ul>
+                  {/if}
+                </Collection>
+                <p></p>
                 </div>
               </Doc>
             </div>
