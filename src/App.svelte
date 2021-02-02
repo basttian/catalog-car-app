@@ -152,7 +152,7 @@ import { selection } from "./store/store.js";
                     <hr>
                     <ul class="uk-list uk-list-divider">
                       {#each data as value}
-                        <li>{value.nombre} - {value.telefono}</li>
+                        <li>{value.nombre} - <a href="tel:{value.telefono}" >{value.telefono}</a></li>
                       {/each}
                     </ul>
                   {/if}
