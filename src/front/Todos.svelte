@@ -30,7 +30,7 @@ import {OpenModalFicha} from "./Ficha.svelte"
 <div class="uk-slider-container-offset" uk-slider="autoplay: true">
     <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1">
 
-        <ul class="uk-child-width-1-2@s uk-child-width-1-3@m uk-slider-items uk-child-width-1-4@s uk-grid">
+        <ul class="uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-child-width-1-5@xl uk-slider-items uk-grid">
         {#each autos as item}    
             <li>
                 <div class="uk-card uk-card-default uk-card-hover">
