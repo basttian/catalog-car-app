@@ -19,14 +19,14 @@ import {OpenModalFicha} from "./Ficha.svelte"
 
 
 <div class="uk-container uk-container-expand uk-margin-medium-bottom">
-<div class="uk-slider-container-offset" uk-slider>
+
 <h1 class="uk-heading-bullet">Destacados</h1>
 
 <FirebaseApp {firebase} perf analytics>
 <Collection path={`autos`} query={ref => ref.where('featured', '==', true)} let:data={autos} let:ref on:ref log>
 <div slot="loading"><div uk-spinner></div></div>
 
-
+<div class="uk-slider-container-offset" uk-slider="autoplay: true">
     <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1">
 
         <ul class="uk-child-width-1-2@s uk-child-width-1-3@m uk-slider-items uk-child-width-1-4@s uk-grid">
@@ -77,10 +77,10 @@ import {OpenModalFicha} from "./Ficha.svelte"
 
     <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
 
-
+</div>
 
 </Collection>
 </FirebaseApp>
 
-</div>
+
 </div>
