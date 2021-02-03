@@ -403,8 +403,7 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
 </div>
 </FirebaseApp>
 
-
-<!-- Section Todos los productos -->
-<TODOS/>
 <!-- Section destacados -->
 <DESTACADOS/>
+<!-- Section Todos los productos -->
+<TODOS/>
