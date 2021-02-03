@@ -403,7 +403,14 @@ query={(ref) => ref.where("tipo","==",`${selectedTipo}`).where("marca","==",`${s
 </div>
 </FirebaseApp>
 
-<!-- Section destacados -->
+
+<div class="uk-child-width-1-1" uk-grid uk-scrollspy="cls: uk-animation-slide-bottom; target: .uk-card; delay: 300; repeat: true">
+
+  <!-- Section destacados -->
 <DESTACADOS/>
 <!-- Section Todos los productos -->
 <TODOS/>
+
+
+
+</div>
