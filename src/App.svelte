@@ -7,12 +7,12 @@ import "firebase/storage";
 import "firebase/performance"; // Optional
 import "firebase/analytics"; // Optional
 var firebaseConfig = {
-    apiKey: "AIzaSyCGPgiPCoDhHI65zXdCVHOqbawy9TFlz64",
-    authDomain: "svelte-8a252.firebaseapp.com",
-    projectId: "svelte-8a252",
-    storageBucket: "svelte-8a252.appspot.com",
-    messagingSenderId: "676731534792",
-    appId: "1:676731534792:web:0b97621cb8b8946491d4fd"
+  apiKey: "AIzaSyDIjbcCiD86695udYUDZQYis4eQF9mkbHE",
+  authDomain: "mycar-78534.firebaseapp.com",
+  projectId: "mycar-78534",
+  storageBucket: "mycar-78534.appspot.com",
+  messagingSenderId: "592932272131",
+  appId: "1:592932272131:web:f7f2da21f927fe6d79f636",
 	};
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
