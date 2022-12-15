@@ -7,13 +7,13 @@ import "firebase/storage";
 import "firebase/performance"; // Optional
 import "firebase/analytics"; // Optional
 var firebaseConfig = {
-  apiKey: "AIzaSyDIjbcCiD86695udYUDZQYis4eQF9mkbHE",
-  authDomain: "mycar-78534.firebaseapp.com",
-  projectId: "mycar-78534",
-  storageBucket: "mycar-78534.appspot.com",
-  messagingSenderId: "592932272131",
-  appId: "1:592932272131:web:f7f2da21f927fe6d79f636",
-	};
+	  apiKey: "AIzaSyDIjbcCiD86695udYUDZQYis4eQF9mkbHE",
+	  authDomain: "mycar-78534.firebaseapp.com",
+	  projectId: "mycar-78534",
+	  storageBucket: "mycar-78534.appspot.com",
+	  messagingSenderId: "592932272131",
+	  appId: "1:592932272131:web:f7f2da21f927fe6d79f636",
+ };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
